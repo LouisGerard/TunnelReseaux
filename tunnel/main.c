@@ -10,7 +10,7 @@
 
 #include "extremite.h"
 
-#define BUFFER_SIZE_MAX 256;
+#define BUFFER_SIZE_MAX 256
 
 int tun_alloc(char *dev) {
     struct ifreq ifr;
@@ -54,6 +54,7 @@ int main() {
     char *dev = malloc(256);
     int tun0 = tun_alloc(dev);
     printf("Interface created !\n");
-    while (1);
+    ext_out();
+//    while (1);
     return 0;
 }
