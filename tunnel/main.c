@@ -1,11 +1,12 @@
-#include <stdio.h>
 #include <net/if.h>
-#include <sys/ioctl.h>
-#include <linux/if_tun.h>
-#include <memory.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/ioctl.h>
+
+#include <unistd.h>
 #include <fcntl.h>
-#include <zconf.h>
+#include <linux/if_tun.h>
 
 #include "extremite.h"
 
