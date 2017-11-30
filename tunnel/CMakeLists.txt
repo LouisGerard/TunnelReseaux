@@ -3,5 +3,5 @@ project(tunnel)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES main.c)
+set(SOURCE_FILES main.c extremite.h extremite.c)
 add_executable(tunnel ${SOURCE_FILES})

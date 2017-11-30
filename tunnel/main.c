@@ -7,7 +7,9 @@
 #include <fcntl.h>
 #include <zconf.h>
 
-const unsigned BUFFER_SIZE_MAX = 256;
+#include "extremite.h"
+
+#define BUFFER_SIZE_MAX 256;
 
 int tun_alloc(char *dev) {
     struct ifreq ifr;
