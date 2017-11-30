@@ -7,13 +7,13 @@
 #include <fcntl.h>
 #include <zconf.h>
 
-int tun_alloc(char *dev)
-{
+#define BUFFER_SIZE_MAX = 256
+
+int tun_alloc(char *dev) {
     struct ifreq ifr;
     int fd, err;
 
-    if( (fd = open("/dev/net/tun", O_RDWR)) < 0 )
-    {
+    if ((fd = open("/dev/net/tun", O_RDWR)) < 0) {
         perror("création tun");
         exit(1);
     }
@@ -21,10 +21,10 @@ int tun_alloc(char *dev)
     memset(&ifr, 0, sizeof(ifr));
 
     ifr.ifr_flags = IFF_TUN;
-    if( *dev )
+    if (*dev)
         strncpy(ifr.ifr_name, dev, IFNAMSIZ);
 
-    if( (err = ioctl(fd, TUNSETIFF, (void *) &ifr)) < 0 ){
+    if ((err = ioctl(fd, TUNSETIFF, (void *) &ifr)) < 0) {
         close(fd);
         return err;
     }
@@ -32,11 +32,25 @@ int tun_alloc(char *dev)
     return fd;
 }
 
-int main() {
-    char* dev = malloc(256);
-    int tun0 = tun_alloc(dev);
-    printf("Hello, World!\n");
+void tun_copy (int src, int dst)
+{
+    size_t size;
+    char* buffer = malloc (sizeof (char) * BUFFER_SIZE_MAX);
+
     while (1)
-        ;
+    {
+        size = read (src, buffer, BUFFER_SIZE_MAX);
+        write (dst, buffer, size);
+        // todo if ... break
+    }
+
+    free (buffer);
+}
+
+int main() {
+    char *dev = malloc(256);
+    int tun0 = tun_alloc(dev);
+    printf("Interface created !\n");
+    while (1);
     return 0;
 }
