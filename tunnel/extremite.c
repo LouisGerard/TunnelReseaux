@@ -40,6 +40,8 @@ void ext_out(unsigned port, int tun0) {
         exit(errno);
     }
 
+    printf("User accepted !\n");
+
     char buff[256];
     while (1) {
         ssize_t lu = recv(csock, &buff, 255, 0);
@@ -77,6 +79,8 @@ void ext_in(unsigned port, char *address, int tun0) {
         perror("connect()");
         exit(errno);
     }
+
+    printf("Connected !\n");
 
     char buff[256];
     while (1) {
