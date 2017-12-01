@@ -8,7 +8,7 @@
 
 #include <unistd.h>
 
-void ext_out(unsigned port) {
+void ext_out(unsigned port, int tun0) {
     int sock = socket(AF_INET6, SOCK_STREAM, 0);
     if(sock < 0) {
         perror("socket()");
@@ -46,6 +46,7 @@ void ext_out(unsigned port) {
         if (lu > 0) {
             buff[lu] = '\0';
             printf("read (%d) : %s\n", (int) lu, buff);
+            write(tun0, &buff, (size_t) (lu + 1));
         } else if (lu < 0) {
             perror("recv()");
             exit(errno);

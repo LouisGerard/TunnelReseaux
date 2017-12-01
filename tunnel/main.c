@@ -55,8 +55,8 @@ int main() {
     int tun0 = tun_alloc(dev);
     printf("Interface created !\n");
     // todo configure tun0
-//    ext_out(123);
-    ext_in(123, "fc00:1234:3::1", tun0);
+    ext_out(123, tun0);
+//    ext_in(123, "fc00:1234:3::1", tun0);
     close(tun0);
     return 0;
 }
