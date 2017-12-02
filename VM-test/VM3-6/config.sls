@@ -13,7 +13,7 @@ ip route del default:
     - run
 
 ##Configuration de VM3-6
-eth1:
+eth2:
   network.managed:
     - enabled: True
     - type: eth
@@ -25,17 +25,17 @@ eth1:
     - ipv6ipaddr: fc00:1234:4::36
     - ipv6netmask: 64
 
-## Configuration de la route vers LAN4-6 via VM3
-routes1:
+## Configuration de la route vers LAN3-6 via VM3
+routes2:
   network.routes:
-    - name: eth1
+    - name: eth2
     - routes:
-      - name: LAN4-6
-        ipaddr: fc00:1234:4::/64
+      - name: LAN3-6
+        ipaddr: fc00:1234:3::/64
         gateway: fc00:1234:4::3
 
 ##Configuration de VM3-6
-eth2:
+eth1:
   network.managed:
     - enabled: True
     - type: eth
@@ -46,13 +46,4 @@ eth2:
     - ipv6_autoconf: no
     - ipv6ipaddr: fc00:1234:2::36
     - ipv6netmask: 64
-
-## Configuration de la route vers LAN2-6 via VM2-6
-routes2:
-  network.routes:
-    - name: eth2
-    - routes:
-      - name: LAN2-6
-        ipaddr: fc00:1234:2::/64
-        gateway: fc00:1234:2::26
 

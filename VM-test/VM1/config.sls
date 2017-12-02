@@ -26,9 +26,6 @@ routes1:
   network.routes:
     - name: eth1
     - routes:
-      - name: LAN1
-        ipaddr: 172.16.2.128/28
-        gateway: 172.16.2.132
       - name: LAN2
         ipaddr: 172.16.2.160/28
         gateway: 172.16.2.132
@@ -54,4 +51,9 @@ routes2:
       - name: LAN3-6
         ipaddr: fc00:1234:3::/64
         gateway: fc00:1234:3::16
+
+net.ipv6.conf.all.forwarding:
+  sysctl:
+    - present
+    - value: 1
 

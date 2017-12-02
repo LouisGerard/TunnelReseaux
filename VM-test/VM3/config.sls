@@ -29,9 +29,6 @@ routes1:
       - name: LAN1
         ipaddr: 172.16.2.128/28
         gateway: 172.16.2.162
-      - name: LAN2
-        ipaddr: 172.16.2.163/28
-        gateway: 172.16.2.162
 
 ##Configuration de VM3
 eth2:
@@ -54,3 +51,8 @@ routes2:
       - name: LAN4-6
         ipaddr: fc00:1234:4::/64
         gateway: fc00:1234:4::36
+
+net.ipv6.conf.all.forwarding:
+  sysctl:
+    - present
+    - value: 1
