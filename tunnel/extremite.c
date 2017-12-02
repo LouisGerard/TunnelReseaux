@@ -15,6 +15,12 @@ void ext_out(unsigned port, int tun0) {
         exit(errno);
     }
 
+    int enable = 1;
+    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)) < 0) {
+        perror("setsockopt()");
+        exit(errno);
+    }
+
     struct sockaddr_in6 sin;
 
     sin.sin6_addr = in6addr_any;
@@ -74,10 +80,8 @@ void ext_in(unsigned port, char *address, int tun0) {
     sin.sin6_family = AF_INET6;
     sin.sin6_port = htons((uint16_t) port);
 
-    if(connect(sock,(struct sockaddr *) &sin, sizeof(struct sockaddr_in6)) < 0)
-    {
-        perror("connect()");
-        exit(errno);
+    while (connect(sock,(struct sockaddr *) &sin, sizeof(struct sockaddr_in6)) < 0) {
+        sleep(1);
     }
 
     printf("Connected !\n");
@@ -87,6 +91,7 @@ void ext_in(unsigned port, char *address, int tun0) {
         ssize_t lu = read(tun0, &buff, 255);
         if (lu > 0) {
             buff[lu] = '\0';
+// alteration CRC           buff[lu-1] = '8';
             printf("read (%d) : %s\n", (int) lu, buff);
             send(sock, &buff, (size_t) lu, 0);
         } else if (lu < 0) {

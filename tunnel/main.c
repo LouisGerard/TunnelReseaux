@@ -10,8 +10,6 @@
 
 #include "extremite.h"
 
-#define BUFFER_SIZE_MAX 256
-
 int tun_alloc(char *dev) {
     struct ifreq ifr;
     int fd, err;
@@ -35,28 +33,21 @@ int tun_alloc(char *dev) {
     return fd;
 }
 
-void tun_copy (int src, int dst)
-{
-    size_t size;
-    char* buffer = malloc (sizeof (char) * BUFFER_SIZE_MAX);
-
-    while (1)
-    {
-        size = read (src, buffer, BUFFER_SIZE_MAX);
-        write (dst, buffer, size);
-        // todo if ... break
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage : %s address\n", argv[0]);
+        exit(EXIT_FAILURE);
     }
-
-    free (buffer);
-}
-
-int main() {
     char *dev = malloc(256);
     int tun0 = tun_alloc(dev);
-    printf("Interface created !\n");
     system("./configure-tun.sh");
-    ext_out(123, tun0);
-//    ext_in(123, "fc00:1234:3::1", tun0);
+    printf("Interface installed !\n");
+
+    if (fork() == 0)
+        ext_out(123, tun0);
+    else
+        ext_in(123, argv[1], tun0);
+
     close(tun0);
     return 0;
 }
