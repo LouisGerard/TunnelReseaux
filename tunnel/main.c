@@ -16,7 +16,7 @@ int tun_alloc(char *dev) {
 
     if ((fd = open("/dev/net/tun", O_RDWR)) < 0) {
         perror("création tun");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     memset(&ifr, 0, sizeof(ifr));

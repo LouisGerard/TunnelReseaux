@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 void ext_out(unsigned port, int tun0) {
-    int sock = socket(AF_INET6, SOCK_STREAM, 0);
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
     if(sock < 0) {
         perror("socket()");
         exit(errno);
@@ -21,11 +21,11 @@ void ext_out(unsigned port, int tun0) {
         exit(errno);
     }
 
-    struct sockaddr_in6 sin;
+    struct sockaddr_in sin;
 
-    sin.sin6_addr = in6addr_any;
-    sin.sin6_family = AF_INET6;
-    sin.sin6_port = htons((uint16_t) port);
+    sin.sin_addr.s_addr = htonl(INADDR_ANY);
+    sin.sin_family = AF_INET;
+    sin.sin_port = htons((uint16_t) port);
 
     if(bind (sock, (struct sockaddr *) &sin, sizeof sin) < 0) {
         perror("bind()");
@@ -68,17 +68,17 @@ void ext_out(unsigned port, int tun0) {
 }
 
 void ext_in(unsigned port, char *address, int tun0) {
-    int sock = socket(AF_INET6, SOCK_STREAM, 0);
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
     if(sock < 0) {
         perror("socket()");
         exit(errno);
     }
 
-    struct sockaddr_in6 sin;
+    struct sockaddr_in sin;
 
-    inet_pton(AF_INET6, address, &sin.sin6_addr);
-    sin.sin6_family = AF_INET6;
-    sin.sin6_port = htons((uint16_t) port);
+    inet_pton(AF_INET, address, &sin.sin_addr);
+    sin.sin_family = AF_INET;
+    sin.sin_port = htons((uint16_t) port);
 
     while (connect(sock,(struct sockaddr *) &sin, sizeof(struct sockaddr_in6)) < 0) {
         sleep(1);
