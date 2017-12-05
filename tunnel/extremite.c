@@ -93,7 +93,6 @@ void ext_in(unsigned port, char *address, int tun0) {
         ssize_t lu = read(tun0, &buff, BUFFER_SIZE - 1);
         if (lu > 0) {
             buff[lu] = '\0';
-// alteration CRC           buff[lu-1] = '8';
             printf("read (%d) : %s\n", (int) lu, buff);
             send(sock, &buff, (size_t) lu, 0);
         } else if (lu < 0) {
