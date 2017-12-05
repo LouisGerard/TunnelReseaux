@@ -8,6 +8,8 @@
 
 #include <unistd.h>
 
+#define BUFFER_SIZE 1500
+
 void ext_out(unsigned port, int tun0) {
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if(sock < 0) {
@@ -48,9 +50,9 @@ void ext_out(unsigned port, int tun0) {
 
     printf("User accepted !\n");
 
-    char buff[256];
+    char buff[BUFFER_SIZE];
     while (1) {
-        ssize_t lu = recv(csock, &buff, 255, 0);
+        ssize_t lu = recv(csock, &buff, BUFFER_SIZE - 1, 0);
         if (lu > 0) {
             buff[lu] = '\0';
             printf("read (%d) : %s\n", (int) lu, buff);
@@ -86,9 +88,9 @@ void ext_in(unsigned port, char *address, int tun0) {
 
     printf("Connected !\n");
 
-    char buff[256];
+    char buff[BUFFER_SIZE];
     while (1) {
-        ssize_t lu = read(tun0, &buff, 255);
+        ssize_t lu = read(tun0, &buff, BUFFER_SIZE - 1);
         if (lu > 0) {
             buff[lu] = '\0';
 // alteration CRC           buff[lu-1] = '8';
